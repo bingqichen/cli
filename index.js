@@ -2,7 +2,7 @@
 const program = require('commander');
 
 const { createProject } = require('./actions/createProject');
-const { setTemplateSource } = require('./actions/setTemplateSource');
+const { setTemplateFileUrl } = require('./actions/setTemplateFileUrl');
 
 program
   .version('1.0.0')
@@ -14,9 +14,9 @@ program
   });
 
 program
-  .command('setUrl [templateSourceUrl]')
-  .action((templateSourceUrl) => {
-    setTemplateSource(templateSourceUrl);
+  .command('setUrl [templateFileUrl]')
+  .action((templateFileUrl) => {
+    setTemplateFileUrl(templateFileUrl);
   })
 
 program.parse(process.argv);

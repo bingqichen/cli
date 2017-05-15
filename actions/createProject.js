@@ -30,17 +30,14 @@ const questions = [{
 }];
 
 const getTemplateList = () => (
-  axios.get(templateSource.source)
-    .then(function (response) {
-      return response.data;
-    })
-    .catch(function (error) {
-      console.log(error);
+  axios.get(templateSource.fileUrl)
+    .then(response => response.data)
+    .catch((error) => {
+      console.log(error)
     })
 )
 
 const createProject = async (initName) => {
-
   const templateList = await getTemplateList();
 
   questions.unshift({
