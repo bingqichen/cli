@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs')
 const inquirer = require('inquirer');
 const axios = require('axios');
-const { mkdir, exec, rm } = require('shelljs');
+const { mkdir, exec, rm, cd } = require('shelljs');
 
 const templateSource = require('../config/templateSource.json');
 
@@ -16,7 +16,7 @@ const questions = [{
   type: 'input',
   name: 'description',
   message: 'description',
-  default: 'react && dva project.'
+  default: ''
 }, {
   type: 'input',
   name: 'author',
@@ -26,7 +26,7 @@ const questions = [{
   type: 'input',
   name: 'license',
   message: 'license',
-  default: 'MIT'
+  default: 'ISC'
 }];
 
 const getTemplateList = () => (
@@ -65,9 +65,10 @@ const createProject = async (initName) => {
 
       mkdir('-p', projectPath);
 
+      console.log('clone project started');
       exec(`git clone ${templateList[template]} ${projectPath}`, (code) => {
         if (code !== 0) return;
-        console.log(process.cwd());
+
         rm('-rf', path.join(projectPath, './.git'));
         const packageObj = require(path.join(projectPath, './package.json'));
         packageObj.name = name;
@@ -76,7 +77,11 @@ const createProject = async (initName) => {
         packageObj.author = author;
         packageObj.license = license;
 
-        fs.writeFileSync(path.join(projectPath, './package.json'), JSON.stringify(templateSource, null, 2));
+        fs.writeFileSync(path.join(projectPath, './package.json'), JSON.stringify(packageObj, null, 2));
+
+        cd(projectPath);
+        console.log('npm install started');
+        exec('npm install');
       });
     })
 }
