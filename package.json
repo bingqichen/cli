@@ -2,7 +2,9 @@
   "name": "cli",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "bin": {
+
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bingqichen/cli.git"
@@ -14,6 +16,9 @@
   },
   "homepage": "https://github.com/bingqichen/cli#readme",
   "dependencies": {
-    "inquirer": "^3.0.6"
+    "axios": "^0.16.1",
+    "commander": "^2.9.0",
+    "inquirer": "^3.0.6",
+    "shelljs": "^0.7.7"
   }
 }
