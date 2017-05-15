@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs')
 const inquirer = require('inquirer');
 const axios = require('axios');
-const { mkdir, cd, exec, rm } = require('shelljs');
+const { mkdir, exec, rm } = require('shelljs');
 
 const templateSource = require('../config/templateSource.json');
 
@@ -60,22 +60,23 @@ const createProject = async (initName) => {
   inquirer
     .prompt(questions)
     .then(({ name = initName, template, version, description, author, license }) => {
-      mkdir('-p', path.resolve(process.cwd(), `./${name}`));
-      cd(path.resolve(process.cwd(), `./${name}`));
 
-      exec(`git clone ${templateList[template]}`, (code) => {
+      const projectPath = path.resolve(process.cwd(), `./${name}`);
+
+      mkdir('-p', projectPath);
+
+      exec(`git clone ${templateList[template]} ${projectPath}`, (code) => {
         if (code !== 0) return;
-        rm('-rf', path.resolve('.git'));
-        const packageObj = require('./package.json');
+        console.log(process.cwd());
+        rm('-rf', path.join(projectPath, './.git'));
+        const packageObj = require(path.join(projectPath, './package.json'));
         packageObj.name = name;
         packageObj.version = version;
         packageObj.description = description;
         packageObj.author = author;
         packageObj.license = license;
 
-        fs.writeFileSync('./package.json', JSON.stringify(templateSource, null, 2));
-
-        exec('npm install');
+        fs.writeFileSync(path.join(projectPath, './package.json'), JSON.stringify(templateSource, null, 2));
       });
     })
 }
