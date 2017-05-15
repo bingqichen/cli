@@ -26,7 +26,7 @@ const questions = [{
   type: 'input',
   name: 'license',
   message: 'license',
-  default: 'ISC'
+  default: 'MIT'
 }];
 
 const getTemplateList = () => (
@@ -67,7 +67,10 @@ const createProject = async (initName) => {
 
       console.log('clone project started');
       exec(`git clone ${templateList[template]} ${projectPath}`, (code) => {
-        if (code !== 0) return;
+        if (code !== 0) {
+          console.error(code);
+          return;
+        }
 
         rm('-rf', path.join(projectPath, './.git'));
         const packageObj = require(path.join(projectPath, './package.json'));
