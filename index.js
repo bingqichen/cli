@@ -14,7 +14,7 @@ program
   });
 
 program
-  .command('setUrl [templateFileUrl]', '设置获取模版列表的文件源')
+  .command('setUrl <templateFileUrl>', '设置获取模版列表的文件源')
   .action((templateFileUrl) => {
     setTemplateFileUrl(templateFileUrl);
   })
